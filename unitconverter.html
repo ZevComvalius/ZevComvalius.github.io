@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+
+
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+
+
+
+
+<!-- Main -->
+<div id="main">
+<div class="inner">
+<h1><br />
+Unit converter</a></h1>
+<span class="image"><img src="images/UCshowcase.gif" alt="" /></span>
+<p></p>
+<p><b style='color:rgb(36, 36, 36)'>I found myself looking up unit converters online a bit too often, so i made my own. It converts a certain value in one unit to a corresponding value in another unit. I created a nice UI to make it easy to use. The code also allows new units to be added easily.</b></p>
+<p>Take a look at the code here:
+<pre>
+<code>
+	<br># Import all the needed packages<br><b style='color:purple'>import</b> tkinter as tk<br><b style='color:purple'>import</b> tkinter.ttk as ttk<br><b style='color:purple'>from</b> tkinter <b style='color:purple'>import</b> PhotoImage<br><br># Create window <b style='color:purple'>with</b> Tkinter<br>window = tk.<b style='color:navy'>Tk</b>()<br>window.<b style='color:navy'>title</b>(" Unit converter ")<br>window.<b style='color:navy'>geometry</b>("500x250")<br>window.<b style='color:navy'>resizable</b>(False, False)<br>window.<b style='color:navy'>iconbitmap</b>('C:/Users/Zev/Desktop/Coding/unit converter assets/U.ico')<br>outputlist = []<br>combo2 = ttk.<b style='color:navy'>Combobox</b>(window, values = outputlist, width = 13, state = "readonly")<br><br>     <br># Function to update the output box to the converted value, using math and the conversion constants<br><b style='color:purple'>def</b> <b style='color:navy'>convert</b>():<br>    output.<b style='color:navy'>set</b>(<br>        <b style='color:navy'>round</b>(<br>        (<b style='color:navy'>float</b>(input.<b style='color:navy'>get</b>()) * data[combo1.<b style='color:navy'>get</b>()]['std'] + data[combo1.<b style='color:navy'>get</b>()]['offset'] * data[combo1.<b style='color:navy'>get</b>()]['std'] ) <br>        /<br>   
+	data[combo2.<b style='color:navy'>get</b>()]['std'] - data[combo2.<b style='color:navy'>get</b>()]['offset']<br>        , 6))<br><br>#Define conversion constants of every unit<br>data = {<br>    "Meter": {<br>    
+   "std": 1,<br>        "offset": 0,<br>    },<br>    "Kilometer": {<br>        "std": 1000,<br>        "offset": 0,<br>    },<br>    "Mile": {<br>        "std": 1609.344,<br>        "offset": 0,<br>    },<br>    "Foot": {<br>        "std": 0.3048,<br>        "offset": 0,<br>    },<br>    "Celsius": {<br>        "std": 1,<br>        "offset": 273.15,<br>    },<br>    "Fahrenheit": {<br>        "std": 5/9,<br>        "offset": 459.67,<br>    },<br>    "Kelvin": {<br>        "std": 1,<br>        "offset": 0,<br>    },<br>    "Kilogram": {<br>        "std": 1000,<br>        "offset": 0,<br>    },<br>    "Gram": {<br>        "std": 1,<br>        "offset": 0,<br><br>    },<br>    "Stone": {<br>        "std": 6350.29318 ,<br>        "offset": 0,<br>    },<br>    "Pound": {<br>        "std": 453.59237 ,<br>        "offset": 0,<br>    }<br>}<br><br># Function that swaps input and output boxes<br><b style='color:purple'>def</b> <b style='color:navy'>swap</b>():<br>    global combo1<br>    global combo2<br>    temp = combo1.<b style='color:navy'>get</b>()<br>    combo1.<b style='color:navy'>set</b>(combo2.<b style='color:navy'>get</b>())<br>    combo2.<b style='color:navy'>set</b>(temp)<br>    temp2 = inputbox.<b style='color:navy'>get</b>()<br>    input.<b style='color:navy'>set</b>(outputbox.<b style='color:navy'>get</b>())<br>    output.<b style='color:navy'>set</b>(temp2)<br><br># Function that updates the output unit box to only view valid units (that correspond to the input unit)<br><b style='color:purple'>def</b> <b style='color:navy'>mode</b>(eventObject):<br>    global outputlist<br>    global combo2<br>    <b style='color:navy'>print</b>(eventObject)<br>    <b style='color:navy'>print</b>(combo1.<b style='color:navy'>get</b>())<br>    if combo1.<b style='color:navy'>get</b>() == "Pick an Option":<br>        outputlist = []<br>    if  combo1.<b style='color:navy'>get</b>() == "Gram" or combo1.<b style='color:navy'>get</b>() == "Kilogram" or combo1.<b style='color:navy'>get</b>() == "Stone":<br>        outputlist = ["Gram", "Kilogram", "Stone"]<br>    if combo1.<b style='color:navy'>get</b>() == "Meter" or combo1.<b style='color:navy'>get</b>() == "Kilometer" or combo1.<b style='color:navy'>get</b>() == "Mile" or combo1.<b style='color:navy'>get</b>() == "Foot":<br>        outputlist = ["Meter", "Kilometer", "Foot", "Mile"]<br>        <b style='color:navy'>print</b>("it works")<br>    if combo1.<b style='color:navy'>get</b>() == "Celsius" or combo1.<b style='color:navy'>get</b>() == "Fahrenheit" or combo1.<b style='color:navy'>get</b>() == "Kelvin":<br>        outputlist = ["Celsius", "Fahrenheit", "Kelvin"]<br>        <b style='color:navy'>print</b>("it works")<br>    combo2 = ttk.<b style='color:navy'>Combobox</b>(window, values = outputlist, width = 13, state = "readonly")<br>    combo2.<b style='color:navy'>place</b>(x=390,y=160)<br><br><br># input entry box<br>input = tk.<b style='color:navy'>StringVar</b>()<br>inputbox = ttk.<b style='color:navy'>Entry</b>(window, width = 16,textvariable=input)<br>inputbox.<b style='color:navy'>place</b>(x=20, y=160)<br><br># output entry box<br>output = tk.<b style='color:navy'>StringVar</b>()<br>outputbox = ttk.<b style='color:navy'>Entry</b>(window, width = 16, textvariable=output, state = "readonly")<br>outputbox.<b style='color:navy'>place</b>(x=280, y=160)<br><br># list of units in that can be chosen<br>inputlist = ["Meter", "Kilometer","Foot", "Mile", "Gram", "Kilogram", "Stone", "Pound", "Celsius", "Fahrenheit", "Kelvin" ]<br>outputlist = []<br><br># the box that lets you choose the unit of the input<br>combo1 = ttk.<b style='color:navy'>Combobox</b>(window, values = inputlist, width = 13, state = "readonly")<br>combo1.<b style='color:navy'>set</b>("Pick an Option")<br>combo1.<b style='color:navy'>place</b>(x=130,y=160)<br><br># run the mode function when an input unit is chosen<br>combo1.<b style='color:navy'>bind</b>("<<ComboboxSelected>>", mode)<br><br># Create the equals sign<br>equals = tk.<b style='color:navy'>Label</b>(window, text = " = ")<br>font=("Calibri 30 bold")<br>equals.<b style='color:navy'>place</b>(x=245, y=160)<br><br># Create the swap button<br>btn1 = ttk.<b style='color:navy'>Button</b>(window, text="swap", command=swap)<br>btn1.<b style='color:navy'>place</b>(x=215,y=117)<br><br># Create the convert button<br>btn2 = ttk.<b style='color:navy'>Button</b>(window, text="Convert", command=convert)<br>btn2.<b style='color:navy'>place</b>(x=215,y=200)<br><br><br># Create a frame <br>frame = ttk.<b style='color:navy'>Frame</b>(window, width = 270, height = 98)<br>frame.<b style='color:navy'>place</b>(x=120,y=5)<br>frame['borderwidth'] = 2<br>frame['relief'] = 'ridge'<br><br># Create another frame<br>frame2 = ttk.<b style='color:navy'>Frame</b>(window, width = 90, height =90)<br>frame2.<b style='color:navy'>place</b>(x=20,y=5)<br>frame2['borderwidth'] = 2<br>frame2['relief'] = 'ridge'<br><br># Text <br>title = ttk.<b style='color:navy'>Label</b>(frame, text = "Unit converter")<br>font=("Calibri 30 bold")<br>title.<b style='color:navy'>place</b>(x=10,y=10)<br><br>credit = ttk.<b style='color:navy'>Label</b>(window, text = "By Zev Comvalius")<br>font=("Calibri 30 bold")<br>credit.<b style='color:navy'>place</b>(x=392,y=220)<br><br>label = ttk.<b style='color:navy'>Label</b>(frame, text = "1. Fill in a value and its unit on the left. <br> 2. Choose what unit to convert to on the right. <br> 3. Click convert.")<br>font=("Calibri 30 bold")<br>label.<b style='color:navy'>place</b>(x=10,y=30)<br><b style='color:navy'>print</b>(combo1.<b style='color:navy'>get</b>())<br><br># Image<br>image = <b style='color:navy'>PhotoImage</b>(file="C:/Users/Zev/Desktop/Coding/unit converter assets/U.png")<br>label3 = tk.<b style='color:navy'>Label</b>(frame2, image=image)<br>label3.<b style='color:navy'>place</b>()<br>label3.<b style='color:navy'>pack</b>()<br><br>window.<b style='color:navy'>mainloop</b>()<br>&nbsp;&nbsp;&nbsp;&nbsp;
+</code>
+</pre>
+</div>
+</div>
+
+
+</div>
+</div>
+
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>

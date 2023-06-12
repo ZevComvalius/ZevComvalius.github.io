@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+
+
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+
+
+
+
+<!-- Main -->
+<div id="main">
+<div class="inner">
+<h1><br />
+QR-code generator</a></h1>
+<span class="image"><img src="images/QRcodeshowcase.gif" alt="" /></span>
+<p></p>
+<p><b style='color:rgb(36, 36, 36)'>Whenever i wanted to create a QR-code for a link i got frustrated because online generators require you to create an account and sometimes even pay! Thats why i made my own QR-code generator. Using python i made a simple UI that lets you enter a link and when you press create, it shows the QR-code with that link encoded. The program also saves the QR-code to your disk for easy sharing.</b></p>
+<p>Take a look at the code here:
+<pre>
+<code><br># Import all the needed packages<br><b style='color:purple'>import</b> qrcode<br><b style='color:purple'>import</b> tkinter as tk<br><b style='color:purple'>import</b> tkinter.ttk as ttk<br><b style='color:purple'>from</b> PIL <b style='color:purple'>import</b> ImageTk, Image<br><br># Create a windows window<br>window = tk.<b style='color:navy'>Tk</b>()<br>window.<b style='color:navy'>title</b>(" QR-code Generator ")<br>window.<b style='color:navy'>geometry</b>("490x700")<br>window.<b style='color:navy'>resizable</b>(False, False)<br>window.<b style='color:navy'>iconbitmap</b>('path')<br><br># The function that activates when the button is pressed<br><b style='color:purple'>def</b> <b style='color:navy'>create</b>():<br>    global img<br>    qr = qrcode.<b style='color:navy'>QRCode</b>(<br>        version=1,<br>        error_correction=qrcode.constants.ERROR_CORRECT_L,<br>        box_size=12,<br>        border=2,<br>    )<br>    qr.<b style='color:navy'>add_data</b>(input1.<b style='color:navy'>get</b>())<br>    qr.<b style='color:navy'>make</b>(fit=True)<br>    txt1 = combo1.<b style='color:navy'>get</b>()<br>    txt2 = combo2.<b style='color:navy'>get</b>()<br>    img = qr.<b style='color:navy'>make_image</b>(fill_color=txt2.<b style='color:navy'>lower</b>(), back_color=txt1.<b style='color:navy'>lower</b>())<br>    img.<b style='color:navy'>save</b>('QRcode.png')<br>    img = ImageTk.<b style='color:navy'>PhotoImage</b>(Image.<b style='color:navy'>open</b>("QRcode.png"))<br><br>    frame = ttk.<b style='color:navy'>Frame</b>(window, width = 418, height =418)<br>    frame.<b 
+    style='color:navy'>place</b>(x=38,y=150)<br>    frame['borderwidth'] = 2<br>    frame['relief'] = 'flat'<br><br><br>    label = tk.<b style='color:navy'>Label</b>(frame, image = img)<br>    label.<b style='color:navy'>pack</b>()<br><br># Create the color selection boxes<br>inputlist = ["White", "Black","Red", "Green", "Blue", "Yellow", "Pink", "Purple", "Orange", "Gray"]<br>combo1 = ttk.<b style='color:navy'>Combobox</b>(window, values = inputlist, width = 13, state = "readonly")<br>combo1.<b style='color:navy'>set</b>("Pick an Option")<br>combo1.<b style='color:navy'>place</b>(x=40,y=96)<br><br>combo2 = ttk.<b style='color:navy'>Combobox</b>(window, values = inputlist, width = 13, state = "readonly")<br>combo2.<b style='color:navy'>set</b>("Pick an Option")<br>combo2.<b style='color:navy'>place</b>(x=345,y=96)<br><br># Create the create button<br>btn1 = ttk.<b style='color:navy'>Button</b>(window, text="Create QR-code", command=create)<br>btn1.<b style='color:navy'>place</b>(x=200,y=96)<br><br># Create the text input box<br>input1 = tk.<b style='color:navy'>StringVar</b>()<br>inputbox = ttk.<b style='color:navy'>Entry</b>(window, width = 67,textvariable=input1)<br>inputbox.<b style='color:navy'>place</b>(x=40, y=40)<br><br># Text<br>credit = ttk.<b style='color:navy'>Label</b>(window, text = "By Zev Comvalius")<br>font=("Calibri 30 bold")<br>credit.<b style='color:navy'>place</b>(x=382,y=670)<br><br>bckgrndtxt = ttk.<b style='color:navy'>Label</b>(window, text = "Background color")<br>font=("Calibri 30 bold")<br>bckgrndtxt.<b style='color:navy'>place</b>(x=40,y=76)<br><br>boxtxt = ttk.<b style='color:navy'>Label</b>(window, text = "Box color")<br>font=("Calibri 30 bold")<br>boxtxt.<b style='color:navy'>place</b>(x=345,y=76)<br><br>window.<b style='color:navy'>mainloop</b>()<br>&nbsp;&nbsp;&nbsp;&nbsp;
+</code>
+</pre>
+</div>
+</div>
+
+
+</div>
+</div>
+
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>

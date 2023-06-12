@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+
+
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+
+
+
+
+<!-- Main -->
+<div id="main">
+<div class="inner">
+<h1><br />
+Line follower</a></h1>
+<span class="image"><img src="images/linefollower.gif" alt="" /></span>
+<p></p>
+<p><b style='color:rgb(36, 36, 36)'>Using three light sensors, two servo motors and a FPGA module, this robot can follow a line on the ground autonomously. The code on the FPGA includes a clock, a controller, a buffer and motor controls. The benefit of using an FPGA is that it is very fast at performing a specific task, unlike a normal CPU which can do a lot of things moderately fast.</b></p>
+<p>Take a look at the code here:
+<pre>
+<code>
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+-- Testbench for the input buffer.
+-- The key thing to look out for here is that the output is 2 clock cycles delayed
+-- from the input.
+entity inputbuffer_tb is
+end;
+
+architecture bench of inputbuffer_tb is
+
+  component inputbuffer
+port (
+  clk : in std_logic;
+  reset : in std_logic;
+  sensor_l_in : in std_logic;
+  sensor_m_in : in std_logic;
+  sensor_r_in : in std_logic;
+  sensor_l_out : out std_logic;
+  sensor_m_out : out std_logic;
+  sensor_r_out : out std_logic
+);
+  end component;
+
+  signal clk : std_logic;
+  signal reset : std_logic;
+  signal sensor_l_in : std_logic;
+  signal sensor_m_in : std_logic;
+  signal sensor_r_in : std_logic;
+  signal sensor_l_out : std_logic;
+  signal sensor_m_out : std_logic;
+  signal sensor_r_out : std_logic;
+
+begin
+
+  inputbuffer_inst : inputbuffer
+  port map(
+clk => clk,
+reset => reset,
+sensor_l_in => sensor_l_in,
+sensor_m_in => sensor_m_in,
+sensor_r_in => sensor_r_in,
+sensor_l_out => sensor_l_out,
+sensor_m_out => sensor_m_out,
+sensor_r_out => sensor_r_out
+  );
+
+  clk <= '0' after 0 ns,
+'1' after 10 ns when clk /= '1' else '0' after 10 ns;
+
+  sensor_l_in <= '0' after 0 ns,
+'1' after 15 ns,
+'0' after 40 ns,
+'1' after 45 ns,
+'0' after 50 ns;
+
+  sensor_m_in <= '0' after 0 ns,
+'1' after 15 ns,
+'0' after 40 ns,
+'1' after 45 ns,
+'0' after 50 ns;
+
+  sensor_r_in <= '0' after 0 ns,
+'1' after 15 ns,
+'0' after 40 ns,
+'1' after 45 ns,
+'0' after 50 ns;
+
+  reset <= '0' after 0 ns;
+
+end;
+
+-- Entity that gets raw data from sensors and buffers it to be clock-synchronised.
+-- It's really just two threebitregister's chained to each other.
+entity inputbuffer is
+  port (
+clk : in std_logic;
+reset : in std_logic;
+
+sensor_l_in : in std_logic;
+sensor_m_in : in std_logic;
+sensor_r_in : in std_logic;
+
+sensor_l_out : out std_logic;
+sensor_m_out : out std_logic;
+sensor_r_out : out std_logic
+  );
+end entity;
+
+architecture arch of inputbuffer is
+  component threebitregister
+port (
+  clk : in std_logic;
+  reset : in std_logic;
+  data_in : in std_logic_vector(2 downto 0);
+  data : out std_logic_vector(2 downto 0)
+);
+  end component;
+
+  signal data_inbetween : std_logic_vector(2 downto 0);
+begin
+
+  regis_one : threebitregister port map(
+clk => clk,
+reset => reset,
+data_in(0) => sensor_l_in,
+data_in(1) => sensor_m_in,
+data_in(2) => sensor_r_in,
+data => data_inbetween
+  );
+
+  regis_two : threebitregister port map(
+clk => clk,
+reset => reset,
+data_in => data_inbetween,
+data(0) => sensor_l_out,
+data(1) => sensor_m_out,
+data(2) => sensor_r_out
+  );
+
+end architecture arch;
+
+-- Testbench for the input buffer.
+-- The key thing to look out for here is that the output is 2 clock cycles delayed
+-- from the input.
+entity inputbuffer_tb is
+end;
+
+architecture bench of inputbuffer_tb is
+
+  component inputbuffer
+port (
+  clk : in std_logic;
+  reset : in std_logic;
+  sensor_l_in : in std_logic;
+  sensor_m_in : in std_logic;
+  sensor_r_in : in std_logic;
+  sensor_l_out : out std_logic;
+  sensor_m_out : out std_logic;
+  sensor_r_out : out std_logic
+);
+  end component;
+
+  signal clk : std_logic;
+  signal reset : std_logic;
+  signal sensor_l_in : std_logic;
+  signal sensor_m_in : std_logic;
+  signal sensor_r_in : std_logic;
+  signal sensor_l_out : std_logic;
+  signal sensor_m_out : std_logic;
+  signal sensor_r_out : std_logic;
+
+begin
+
+  inputbuffer_inst : inputbuffer
+  port map(
+clk => clk,
+reset => reset,
+sensor_l_in => sensor_l_in,
+sensor_m_in => sensor_m_in,
+sensor_r_in => sensor_r_in,
+sensor_l_out => sensor_l_out,
+sensor_m_out => sensor_m_out,
+sensor_r_out => sensor_r_out
+  );
+
+  clk <= '0' after 0 ns,
+'1' after 10 ns when clk /= '1' else '0' after 10 ns;
+
+  sensor_l_in <= '0' after 0 ns,
+'1' after 15 ns,
+'0' after 40 ns,
+'1' after 45 ns,
+'0' after 50 ns;
+
+  sensor_m_in <= '0' after 0 ns,
+'1' after 15 ns,
+'0' after 40 ns,
+'1' after 45 ns,
+'0' after 50 ns;
+
+  sensor_r_in <= '0' after 0 ns,
+'1' after 15 ns,
+'0' after 40 ns,
+'1' after 45 ns,
+'0' after 50 ns;
+
+  reset <= '0' after 0 ns;
+
+end;
+
+entity motor_tb is
+end entity motor_tb;
+
+architecture structural of motor_tb is
+
+component timebase is
+port (clk: instd_logic;
+reset: instd_logic;
+
+count_out: outstd_logic_vector (? downto 0)
+);
+end component timebase;
+
+component motorcontrol is
+port (clk: instd_logic;
+reset: instd_logic;
+direction: instd_logic;
+count_in: instd_logic_vector (? downto 0);
+
+pwm: outstd_logic
+);
+end component motorcontrol;
+
+signalclk, reset, direction: std_logic;
+signalcount: std_logic_vector (? downto 0);
+signalpwm: std_logic;
+
+begin
+
+lbl0: timebase port map(clk=> clk,
+reset=> reset,
+count_out=> count
+);
+
+lbl1: motorcontrol port map (clk=> clk,
+reset=> reset,
+direction=> direction,
+count_in=> count,
+pwm=> pwm
+);
+
+-- 20 ns = 50 MHz
+clk<='0' after 0 ns,
+'1' after 10 ns when clk /= '1' else '0' after 10 ns;
+
+reset<='1' after 0 ns,
+'0' after 20 ns,
+'1' after 20000000 ns,
+'0' after 20000020 ns,
+'1' after 40000000 ns,
+'0' after 40000020 ns;
+
+direction <='0' after 0 ns,   
+'1' after 20000000 ns;
+
+end architecture structural;
+</code>
+  </pre>
+</div>
+</div>
+
+
+</div>
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
